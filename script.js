@@ -29,7 +29,7 @@ btnJugar.addEventListener('click', () => {
     const numImpostores = parseInt(inputImpostores.value);
 
     if (numImpostores >= totalJugadores) {
-        errorMsg.textContent = "Debe haber menos impostores que jugadores.";
+        errorMsg.textContent = "Demasiados impostores.";
         return;
     }
     if (palabras.length === 0) {
@@ -38,32 +38,24 @@ btnJugar.addEventListener('click', () => {
     }
 
     errorMsg.textContent = "";
-    iniciarJuego(totalJugadores, numImpostores);
-});
-
-function iniciarJuego(jugadores, impostores) {
     const palabraSecreta = palabras[Math.floor(Math.random() * palabras.length)];
 
-    roles = Array(jugadores).fill(palabraSecreta);
-    for (let i = 0; i < impostores; i++) {
+    roles = Array(totalJugadores).fill(palabraSecreta);
+    for (let i = 0; i < numImpostores; i++) {
         roles[i] = "¡SOS EL IMPOSTOR! 🥸";
     }
 
-    for (let i = roles.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [roles[i], roles[j]] = [roles[j], roles[i]];
-    }
+    // Mezclar los roles
+    roles.sort(() => Math.random() - 0.5);
 
     jugadorActual = 0;
     setupScreen.classList.add('hidden');
     gameScreen.classList.remove('hidden');
     actualizarUI();
-}
+});
 
 tarjeta.addEventListener('click', () => {
-    // FIX: Si el juego ya terminó, que no haga nada al tocar la tarjeta
     if (jugadorActual >= totalJugadores) return; 
-    
     if (viendoRol) return; 
     viendoRol = true;
 
@@ -87,7 +79,6 @@ btnSiguiente.addEventListener('click', () => {
     btnSiguiente.classList.add('hidden');
 
     if (jugadorActual >= totalJugadores) {
-        // --- MOSTRAR QUIÉN ERA EL IMPOSTOR ---
         let indicesImpostores = [];
         roles.forEach((rol, i) => {
             if (rol === "¡SOS EL IMPOSTOR! 🥸") {
@@ -106,7 +97,6 @@ btnSiguiente.addEventListener('click', () => {
         btnSiguiente.textContent = "Volver a jugar";
         btnSiguiente.classList.remove('hidden');
         btnSiguiente.onclick = () => location.reload();
-        
     } else {
         actualizarUI();
     }
