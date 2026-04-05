@@ -48,7 +48,7 @@ function iniciarJuego(jugadores, impostores) {
     // 2. Crear el array de roles
     roles = Array(jugadores).fill(palabraSecreta);
     for (let i = 0; i < impostores; i++) {
-        roles[i] = "¡SOS EL IMPOSTOR!";
+        roles[i] = "¡SOS EL IMPOSTOR! 🥸";
     }
 
     // 3. Mezclar los roles aleatoriamente (Algoritmo Fisher-Yates)
@@ -73,7 +73,7 @@ tarjeta.addEventListener('click', () => {
     mensajeTarjeta.textContent = rol;
     tarjeta.classList.add('revelada');
 
-    if (rol === "¡SOS EL IMPOSTOR!") {
+    if (rol === "¡SOS EL IMPOSTOR! 🥸") {
         tarjeta.classList.add('impostor');
     }
 
@@ -91,7 +91,7 @@ btnSiguiente.addEventListener('click', () => {
 
     if (jugadorActual >= totalJugadores) {
         // Fin de los turnos
-        turnoText.textContent = "¡A debatir!";
+        turnoText.textContent = "¡A debatir! 🫣";
         tarjeta.classList.add('hidden');
         btnSiguiente.textContent = "Volver a jugar";
         btnSiguiente.classList.remove('hidden');
