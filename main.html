@@ -1,1 +1,37 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Juego del Impostor</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="setup" class="screen">
+        <h1>El Impostor</h1>
+        
+        <div class="input-group">
+            <label for="jugadores">Cantidad de jugadores:</label>
+            <input type="number" id="jugadores" min="3" value="4">
+        </div>
 
+        <div class="input-group">
+            <label for="impostores">Cantidad de impostores:</label>
+            <input type="number" id="impostores" min="1" value="1">
+        </div>
+
+        <button id="btn-jugar">Jugar</button>
+        <p id="error-msg" class="error"></p>
+    </div>
+
+    <div id="game" class="screen hidden">
+        <h2 id="turno-text">Jugador 1</h2>
+        <div id="tarjeta" class="tarjeta">
+            <span id="mensaje-tarjeta">Toca para ver tu rol</span>
+        </div>
+        <button id="btn-siguiente" class="hidden">Siguiente Jugador</button>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
