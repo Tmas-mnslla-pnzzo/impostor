@@ -106,7 +106,7 @@ btnSiguiente.addEventListener('click', () => {
     if (jugadorActual >= totalJugadores) {
         // --- NUEVA PANTALLA: SOLO DEBATE ---
         faseDebate = true; // Activamos la pausa
-        turnoText.textContent = "¡A debatir! 🗣️";
+        turnoText.textContent = "¡A debatir! 🤔";
         
         tarjeta.classList.add('hidden'); // Escondemos el cuadrado para que no moleste
         
