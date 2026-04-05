@@ -3,6 +3,7 @@ let roles = [];
 let jugadorActual = 0;
 let totalJugadores = 0;
 let viendoRol = false;
+let faseDebate = false; // Agregamos esta variable para controlar el estado del juego
 
 const setupScreen = document.getElementById('setup');
 const gameScreen = document.getElementById('game');
@@ -49,13 +50,14 @@ btnJugar.addEventListener('click', () => {
     roles.sort(() => Math.random() - 0.5);
 
     jugadorActual = 0;
+    faseDebate = false; // Reiniciamos la fase por si es una partida nueva
     setupScreen.classList.add('hidden');
     gameScreen.classList.remove('hidden');
     actualizarUI();
 });
 
 tarjeta.addEventListener('click', () => {
-    if (jugadorActual >= totalJugadores) return; 
+    if (faseDebate || jugadorActual >= totalJugadores) return; 
     if (viendoRol) return; 
     viendoRol = true;
 
@@ -71,14 +73,8 @@ tarjeta.addEventListener('click', () => {
 });
 
 btnSiguiente.addEventListener('click', () => {
-    jugadorActual++;
-    viendoRol = false;
-
-    tarjeta.classList.remove('revelada', 'impostor');
-    mensajeTarjeta.textContent = "Toca para ver tu rol";
-    btnSiguiente.classList.add('hidden');
-
-    if (jugadorActual >= totalJugadores) {
+    // Si ya estábamos en la pantalla de debate, ahora sí mostramos el resultado
+    if (faseDebate) {
         let indicesImpostores = [];
         roles.forEach((rol, i) => {
             if (rol === "¡SOS EL IMPOSTOR! 🥸") {
@@ -86,7 +82,7 @@ btnSiguiente.addEventListener('click', () => {
             }
         });
 
-        turnoText.textContent = "¡A debatir! 🫣";
+        turnoText.textContent = "¡Fin del juego! 🚨";
         
         tarjeta.classList.remove('hidden'); 
         tarjeta.classList.add('revelada', 'impostor'); 
@@ -95,8 +91,27 @@ btnSiguiente.addEventListener('click', () => {
         mensajeTarjeta.innerHTML = `${textoImpostores}:<br><strong>Jugador ${indicesImpostores.join(', ')}</strong>`;
         
         btnSiguiente.textContent = "Volver a jugar";
-        btnSiguiente.classList.remove('hidden');
         btnSiguiente.onclick = () => location.reload();
+        return; // Cortamos la ejecución acá
+    }
+
+    // Lógica normal para pasar de un jugador al otro
+    jugadorActual++;
+    viendoRol = false;
+
+    tarjeta.classList.remove('revelada', 'impostor');
+    mensajeTarjeta.textContent = "Toca para ver tu rol";
+    btnSiguiente.classList.add('hidden');
+
+    if (jugadorActual >= totalJugadores) {
+        // --- NUEVA PANTALLA: SOLO DEBATE ---
+        faseDebate = true; // Activamos la pausa
+        turnoText.textContent = "¡A debatir! 🗣️";
+        
+        tarjeta.classList.add('hidden'); // Escondemos el cuadrado para que no moleste
+        
+        btnSiguiente.textContent = "Revelar Impostores"; // Botón intermedio
+        btnSiguiente.classList.remove('hidden');
     } else {
         actualizarUI();
     }
